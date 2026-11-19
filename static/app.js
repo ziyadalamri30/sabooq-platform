@@ -22,6 +22,7 @@ const STATE = {
   staff: null,
   activeOrderNumber: localStorage.getItem("sbq_last_order") || "",
   sse: null,
+  trackTimer: null,
   manageTab: "branches",
   manageBrandId: null,
   opsFilter: "active",
@@ -146,6 +147,10 @@ function closeSSE() {
   if (STATE.sse) {
     STATE.sse.close();
     STATE.sse = null;
+  }
+  if (STATE.trackTimer) {
+    clearInterval(STATE.trackTimer);
+    STATE.trackTimer = null;
   }
 }
 
@@ -698,6 +703,8 @@ function drawOrderTrackCard(o) {
           <span class="badge ${esc(o.status)}">${STATUS_LABELS[o.status] || o.status}</span>
         </div>
 
+        <div id="orderTimerBox" class="card" style="background:var(--bg2);text-align:center;margin:14px 0;border-color:var(--ac)"></div>
+
         <div class="stepper">
           ${stages.map((st, idx) => `
             <div class="step-box ${curRank >= idx ? "done" : ""}">
@@ -745,6 +752,52 @@ function drawOrderTrackCard(o) {
       </div>
     </div>
   `;
+  startOrderCountdown(o);
+}
+
+function startOrderCountdown(o) {
+  if (STATE.trackTimer) { clearInterval(STATE.trackTimer); STATE.trackTimer = null; }
+  const box = document.getElementById("orderTimerBox");
+  if (!box) return;
+  if (o.status === "ready" || o.status === "out_for_delivery") {
+    box.innerHTML = `<div style="font-size:22px;font-weight:800;color:var(--ok)">🛎️ طلبك جاهز للاستلام الآن!</div><div class="mut" style="font-size:13px">يمكنك التوجه للاستلام أو انتظار التسليم</div>`;
+    return;
+  }
+  if (o.status === "completed") {
+    box.innerHTML = `<div style="font-size:20px;font-weight:800;color:var(--ac)">✅ تم تسليم طلبك بنجاح — بالهناء والعافية!</div>`;
+    return;
+  }
+  if (o.status === "cancelled") {
+    box.innerHTML = `<div style="font-size:18px;font-weight:800;color:var(--red)">❌ تم إلغاء هذا الطلب</div>`;
+    return;
+  }
+  const estMin = Number(o.estimated_minutes || 10);
+  const createdMs = Date.parse(o.created_at) || Date.now();
+  const targetMs = o.estimated_ready_at ? Date.parse(o.estimated_ready_at) : (createdMs + estMin * 60000);
+  const totalSec = Math.max(60, Math.round((targetMs - createdMs) / 1000));
+
+  const tick = () => {
+    const el = document.getElementById("orderTimerBox");
+    if (!el) { clearInterval(STATE.trackTimer); return; }
+    const remSec = Math.max(0, Math.floor((targetMs - Date.now()) / 1000));
+    const mins = Math.floor(remSec / 60);
+    const secs = remSec % 60;
+    const pct = Math.min(100, Math.max(5, Math.round(((totalSec - remSec) / totalSec) * 100)));
+    if (remSec <= 0) {
+      el.innerHTML = `<div style="font-size:20px;font-weight:800;color:var(--warn)">⏳ جاري اللمسات الأخيرة على طلبك...</div><div class="mut" style="font-size:13px">لحظات ويكون جاهزاً</div>`;
+    } else {
+      el.innerHTML = `
+        <div class="mut" style="font-size:13px">⏱️ الوقت المتبقي المتوقع لتجهيز طلبك</div>
+        <div style="font-size:38px;font-weight:800;color:var(--ac);letter-spacing:2px;line-height:1.2;margin:4px 0" dir="ltr">${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}</div>
+        <div class="mut" style="font-size:13px">متبقي تقريباً <b>${mins > 0 ? mins + " دقيقة" : secs + " ثانية"}</b> (المدة التقديرية: ${estMin} دقيقة)</div>
+        <div style="height:8px;background:var(--bg);border-radius:99px;overflow:hidden;margin-top:10px">
+          <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--ac2),var(--ac));transition:width 1s linear"></div>
+        </div>
+      `;
+    }
+  };
+  tick();
+  STATE.trackTimer = setInterval(tick, 1000);
 }
 
 async function submitOrderRating(orderNumber, stars) {
@@ -1035,7 +1088,7 @@ function drawCashierScreen() {
             <div class="row" style="margin-top:auto">
               ${o.status === "new" ? `<button class="btn sm" onclick="updateOrderStatus(${o.id}, {status:'accepted'})">قبول وإرسال للمطبخ</button>` : ""}
               ${["new", "accepted"].includes(o.status) ? `<button class="btn sm warn" onclick="updateOrderStatus(${o.id}, {status:'preparing', kitchen_status:'preparing'})">بدء التجهيز</button>` : ""}
-              ${o.status === "preparing" ? `<button class="btn sm ok" onclick="updateOrderStatus(${o.id}, {status:'ready', kitchen_status:'ready'})">جاهز للاستلام</button>` : ""}
+              ${o.status === "preparing" ? `<button class="btn sm ok" onclick="updateOrderStatus(${o.id}, {status:'ready', kitchen_status:'ready'})">جاهز للاستلام</button><button class="btn sm o" onclick="updateOrderStatus(${o.id}, {extra_minutes:5})">⏱️ +5 د</button>` : ""}
               ${["ready", "out_for_delivery"].includes(o.status) ? `<button class="btn sm ok" onclick="updateOrderStatus(${o.id}, {status:'completed'})">تم التسليم ✅</button>` : ""}
               ${o.status !== "completed" && o.status !== "cancelled" ? `<button class="btn sm danger" onclick="updateOrderStatus(${o.id}, {status:'cancelled'})">إلغاء</button>` : ""}
             </div>
@@ -1095,7 +1148,7 @@ function drawKitchenScreen() {
             ${o.notes ? `<div class="badge warn" style="font-size:13px">📝 ${esc(o.notes)}</div>` : ""}
             <div class="row" style="margin-top:auto">
               ${o.kitchen_status === "pending" ? `<button class="btn warn" style="flex:1" onclick="updateOrderStatus(${o.id}, {kitchen_status:'preparing'})">🔥 بدء التحضير</button>` : ""}
-              ${o.kitchen_status !== "ready" ? `<button class="btn ok" style="flex:1" onclick="updateOrderStatus(${o.id}, {kitchen_status:'ready'})">✅ جاهز للتسليم</button>` : `<span class="badge ready" style="width:100%;justify-content:center;padding:8px">جاهز بانتظار الكاشير / العميل</span>`}
+              ${o.kitchen_status !== "ready" ? `<button class="btn ok" style="flex:1" onclick="updateOrderStatus(${o.id}, {kitchen_status:'ready'})">✅ جاهز للتسليم</button><button class="btn sm o" onclick="updateOrderStatus(${o.id}, {extra_minutes:5})">⏱️ +5 د</button>` : `<span class="badge ready" style="width:100%;justify-content:center;padding:8px">جاهز بانتظار الكاشير / العميل</span>`}
             </div>
           </div>
         `).join("") : `<div class="card"><p class="mut">المطبخ هادئ حالياً — لا توجد طلبات قيد التحضير.</p></div>`}
