@@ -265,8 +265,9 @@ async function renderHome(forceRefresh = false) {
         <div class="cta">
           <button class="btn" onclick="document.getElementById('partnersSec').scrollIntoView({behavior:'smooth'})">🔍 اكتشف المحلات</button>
           <button class="btn o" onclick="openQrScannerModal()">📷 مسح QR / NFC</button>
-          <button class="btn o" onclick="navigate('customer')">⭐ حسابي ونقاطي</button>
-          <button class="btn o" onclick="navigate('${STATE.staff ? (STATE.staff.role === "super_admin" ? "superadmin" : "cashier") : "team"}')">🔐 لوحة الفريق والإدارة</button>
+          <button class="btn o" onclick="navigate('customer')">👤 دخول العميل والنقاط</button>
+          <button class="btn o" onclick="openMerchantRegisterModal()">🏪 سجّل محلك في سبوق</button>
+          <button class="btn o" onclick="navigate('${STATE.staff ? (STATE.staff.role === "super_admin" ? "superadmin" : "cashier") : "team"}')">👑 الإدارة وأصحاب المحلات</button>
         </div>
         <div class="stats">
           <div><b>${STATE.brands.length}</b><span>براند مسجل</span></div>
@@ -326,7 +327,7 @@ function renderBrandsCards(list) {
           <span>${esc(b.name_ar)} <small class="mut" style="font-size:13px">${esc(b.name_en)}</small></span>
           <span class="badge" style="color:${esc(b.theme_ac)};border-color:${esc(b.theme_ac)}">★ ${fmt(b.rating)}</span>
         </h3>
-        <div class="meta">${esc(b.category_ar)} · ${(b.branches || []).length} فرع · ${b.products_count || 0} صنف</div>
+        <div class="meta">${esc(b.category_ar)} · 📍 ${esc(b.city || "المدينة المنورة")} · ${(b.branches || []).length} فرع · ${b.products_count || 0} صنف</div>
         <div class="between" style="margin-top:auto">
           <span class="mut" style="font-size:12px">${b.branches && b.branches[0] ? esc(b.branches[0].name) : ""}</span>
           <span class="btn sm" style="background:${esc(b.theme_ac)};border-color:${esc(b.theme_ac)};color:${esc(b.theme_on)}">اطلب الآن</span>
@@ -1331,13 +1332,19 @@ async function saveNewCategory(brandId) {
   closeModal(); toast("تمت إضافة التصنيف ✅"); renderBrandManageView(brandId);
 }
 function openAddProductModal(brandId, cats) {
-  openModal("إضافة منتج جديد", `
+  openModal("إضافة منتج / عرض وخصم جديد", `
     <label class="fl">التصنيف</label>
     <select id="npCat">${cats.map((c) => `<option value="${c.id}">${esc(c.name_ar)}</option>`).join("")}</select>
-    <label class="fl">اسم المنتج</label><input id="npName" placeholder="مثال: سبانش لاتيه مثلج">
-    <label class="fl">السعر (ر.س)</label><input id="npPrice" type="number" step="0.5" value="18">
-    <label class="fl">السعرات الحرارية</label><input id="npCal" type="number" value="180">
-    <button class="btn" style="width:100%" onclick="saveNewProduct(${brandId})">حفظ المنتج</button>
+    <label class="fl">اسم المنتج أو العرض</label><input id="npName" placeholder="مثال: سبانش لاتيه مثلج أو كومبو الصباح">
+    <div class="grid-2">
+      <div><label class="fl">السعر (ر.س)</label><input id="npPrice" type="number" step="0.5" value="18"></div>
+      <div><label class="fl">نسبة الخصم % (اختياري)</label><input id="npDisc" type="number" min="0" max="90" value="0"></div>
+    </div>
+    <div class="grid-2">
+      <div><label class="fl">السعرات الحرارية</label><input id="npCal" type="number" value="180"></div>
+      <div><label class="fl">هل هو عرض خاص؟</label><select id="npOffer"><option value="0">منتج عادي</option><option value="1">🔥 عرض خاص</option></select></div>
+    </div>
+    <button class="btn" style="width:100%" onclick="saveNewProduct(${brandId})">حفظ المنتج / العرض</button>
   `);
 }
 async function saveNewProduct(brandId) {
@@ -1347,10 +1354,12 @@ async function saveNewProduct(brandId) {
       category_id: Number(document.getElementById("npCat").value) || null,
       name_ar: document.getElementById("npName").value,
       price: Number(document.getElementById("npPrice").value || 0),
+      discount_percent: Number(document.getElementById("npDisc").value || 0),
+      is_offer: Number(document.getElementById("npOffer").value || 0),
       calories: Number(document.getElementById("npCal").value || 0),
     }),
   }, true);
-  closeModal(); toast("تمت إضافة المنتج بنجاح ✅"); renderBrandManageView(brandId);
+  closeModal(); toast("تمت إضافة المنتج / العرض بنجاح ✅"); renderBrandManageView(brandId);
 }
 async function quickEditPrice(prodId, oldPrice) {
   const val = prompt("أدخل السعر الجديد (ر.س):", oldPrice);
@@ -1463,8 +1472,33 @@ async function renderSuperAdminView() {
         <div><b>${t.total_customers}</b><span>العملاء المسجلين</span></div>
       </div>
 
+      ${(data.pending_brands && data.pending_brands.length) ? `
+      <div class="card" style="border-color:var(--warn)">
+        <h3 style="margin-top:0;color:var(--warn)">📋 طلبات تسجيل محلات جديدة بانتظار موافقتك (${data.pending_brands.length})</h3>
+        <p class="sub">حدّد المدينة والموقع الجغرافي ثم وافق لتفعيل المحل وصلاحيات صاحبه فوراً</p>
+        <div class="grid-2">
+          ${data.pending_brands.map((pb) => `
+            <div class="card" style="background:var(--bg2);margin-bottom:0">
+              <div class="between">
+                <b>🏪 ${esc(pb.name_ar)} <small class="mut">(${esc(pb.slug)})</small></b>
+                <span class="badge preparing">بانتظار الموافقة</span>
+              </div>
+              <div class="mut" style="font-size:13px;margin:6px 0">
+                التصنيف: ${esc(pb.category_ar)} · المدينة المقترحة: <b>${esc(pb.city || "—")}</b><br>
+                المالك: ${esc(pb.owner_name || "—")} · الجوال: ${esc(pb.owner_phone || "—")}<br>
+                العنوان: ${esc(pb.branch_address || "—")}
+              </div>
+              <div class="row" style="margin-top:10px">
+                <button class="btn sm ok" onclick='openApproveBrandModal(${JSON.stringify({id:pb.id,name_ar:pb.name_ar,city:pb.city||"المدينة المنورة",address:pb.branch_address||"",lat:pb.lat||24.4672,lng:pb.lng||39.6111}).replace(/'/g,"&#39;")})'>✅ تحديد الموقع والموافقة</button>
+                <button class="btn sm danger" onclick="rejectPendingBrand(${pb.id})">❌ رفض</button>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      </div>` : ""}
+
       <div class="card">
-        <h3 style="margin-top:0">🏪 جميع البراندات المسجلة</h3>
+        <h3 style="margin-top:0">🏪 جميع المحلات والبراندات المسجلة</h3>
         <div class="tbl-wrap"><table class="tbl">
           <thead><tr><th>البراند</th><th>التصنيف</th><th>الفروع</th><th>المنتجات</th><th>الطلبات</th><th>المبيعات</th><th>الحالة</th><th>إدارة</th></tr></thead>
           <tbody>
@@ -1694,3 +1728,103 @@ async function bootstrap() {
 }
 
 bootstrap();
+
+
+function openMerchantRegisterModal() {
+  openModal("🏪 تسجيل محل جديد في منصة سبوق", `
+    <p class="sub">سجّل بيانات محلك الآن — ستراجع الإدارة العليا طلبك وتحدد الموقع والمدينة وتفعّل لوحتك لإضافة المنتجات والعروض والخصومات</p>
+    <div class="grid-2">
+      <div><label class="fl">اسم المحل (عربي)</label><input id="mrAr" placeholder="مثال: كافيه روقان"></div>
+      <div><label class="fl">الاسم (إنجليزي)</label><input id="mrEn" placeholder="Rawqan Cafe"></div>
+    </div>
+    <div class="grid-2">
+      <div><label class="fl">المعرف المختصر بالإنجليزي</label><input id="mrSlug" placeholder="rawqan"></div>
+      <div><label class="fl">التصنيف</label><input id="mrCat" value="قهوة مختصة وحلويات"></div>
+    </div>
+    <div class="grid-2">
+      <div><label class="fl">المدينة</label><input id="mrCity" value="المدينة المنورة"></div>
+      <div><label class="fl">اسم الفرع</label><input id="mrBr" value="الفرع الرئيسي"></div>
+    </div>
+    <label class="fl">العنوان / الحي</label><input id="mrAddr" placeholder="مثال: حي سلطانة، طريق الملك عبدالله">
+    <div class="grid-2">
+      <div><label class="fl">اسم صاحب المحل</label><input id="mrOwner" placeholder="الاسم الكامل"></div>
+      <div><label class="fl">رقم الجوال</label><input id="mrPhone" placeholder="05XXXXXXXX"></div>
+    </div>
+    <div class="grid-2">
+      <div><label class="fl">اسم المستخدم للوحة المحل</label><input id="mrUser" placeholder="rawqan_owner"></div>
+      <div><label class="fl">رمز الدخول (PIN)</label><input id="mrPin" type="password" placeholder="4 أرقام أو أكثر"></div>
+    </div>
+    <button class="btn" style="width:100%" onclick="submitMerchantRegister()">إرسال طلب الانضمام للإدارة العليا</button>
+  `);
+}
+
+async function submitMerchantRegister() {
+  try {
+    const res = await api("/api/merchants/register", {
+      method: "POST",
+      body: JSON.stringify({
+        name_ar: document.getElementById("mrAr").value.trim(),
+        name_en: document.getElementById("mrEn").value.trim(),
+        slug: document.getElementById("mrSlug").value.trim(),
+        category_ar: document.getElementById("mrCat").value.trim(),
+        city: document.getElementById("mrCity").value.trim(),
+        branch_name: document.getElementById("mrBr").value.trim(),
+        address: document.getElementById("mrAddr").value.trim(),
+        owner_name: document.getElementById("mrOwner").value.trim(),
+        owner_phone: document.getElementById("mrPhone").value.trim(),
+        username: document.getElementById("mrUser").value.trim(),
+        pin: document.getElementById("mrPin").value.trim(),
+      }),
+    });
+    closeModal();
+    toast(res.message);
+  } catch (e) { toast(e.message); }
+}
+
+function openApproveBrandModal(b) {
+  openModal(`✅ اعتماد وتحديد موقع محل: ${b.name_ar}`, `
+    <p class="sub">بصفتك الإدارة العليا، حدد المدينة والمكان والموقع الجغرافي ونسبة العمولة قبل التفعيل</p>
+    <label class="fl">المدينة المعتمدة</label>
+    <select id="apCity">
+      ${["المدينة المنورة", "جدة", "الرياض", "مكة المكرمة", "الدمام", "الخبر", "الطائف", "أبها", "القصيم"].map((c) => `<option value="${c}" ${c === b.city ? "selected" : ""}>${c}</option>`).join("")}
+    </select>
+    <label class="fl">المكان والعنوان المعتمد</label>
+    <input id="apAddr" value="${esc(b.address)}" placeholder="الحي، الشارع، المعلم القريب">
+    <div class="grid-2">
+      <div><label class="fl">خط العرض (Latitude)</label><input id="apLat" type="number" step="0.0001" value="${b.lat || 24.4672}"></div>
+      <div><label class="fl">خط الطول (Longitude)</label><input id="apLng" type="number" step="0.0001" value="${b.lng || 39.6111}"></div>
+    </div>
+    <div class="grid-2">
+      <div><label class="fl">عمولة سبوق (%)</label><input id="apComm" type="number" step="0.5" value="5"></div>
+      <div><label class="fl">نقاط الولاء لكل ريال</label><input id="apPts" type="number" step="0.5" value="1"></div>
+    </div>
+    <button class="btn ok" style="width:100%" onclick="confirmApproveBrand(${b.id})">✅ موافقة وتفعيل المحل وصلاحيات صاحبه</button>
+  `);
+}
+
+async function confirmApproveBrand(brandId) {
+  try {
+    await api(`/api/admin/brands/${brandId}/approve`, {
+      method: "POST",
+      body: JSON.stringify({
+        city: document.getElementById("apCity").value,
+        address: document.getElementById("apAddr").value.trim(),
+        lat: Number(document.getElementById("apLat").value || 24.4672),
+        lng: Number(document.getElementById("apLng").value || 39.6111),
+        commission_rate: Number(document.getElementById("apComm").value || 5),
+        loyalty_points_per_sar: Number(document.getElementById("apPts").value || 1),
+      }),
+    }, true);
+    closeModal();
+    STATE.brands = [];
+    toast("تمت الموافقة وتفعيل المحل وحساب صاحبه بنجاح 🎉");
+    renderSuperAdminView();
+  } catch (e) { toast(e.message); }
+}
+
+async function rejectPendingBrand(brandId) {
+  if (!confirm("هل أنت متأكد من رفض طلب تسجيل هذا المحل؟")) return;
+  await api(`/api/admin/brands/${brandId}/reject`, { method: "POST" }, true);
+  toast("تم رفض الطلب");
+  renderSuperAdminView();
+}
