@@ -351,6 +351,7 @@ class OrderStatusUpdate(BaseModel):
     status: Optional[str] = None
     kitchen_status: Optional[str] = None
     payment_status: Optional[str] = None
+    extra_minutes: Optional[int] = None
 
 
 class OrderRateInput(BaseModel):
@@ -798,14 +799,21 @@ async def create_order(payload: OrderCreate, sess: Optional[Dict[str, Any]] = De
         # Loyalty points earned
         points_earned = int(round(total * float(brand["loyalty_points_per_sar"] or 1.0))) if customer_id else 0
 
+        # Real estimated preparation time based on branch prep_minutes, busy_level & order_mode
+        base_prep = int(branch["prep_minutes"] or 10)
+        busy_extra = 4 if branch["busy_level"] == "medium" else (8 if branch["busy_level"] == "busy" else 0)
+        mode_extra = 15 if payload.order_mode == "delivery" else 0
+        est_minutes = max(3, base_prep + busy_extra + mode_extra)
+        est_ready_at = (datetime.now(timezone.utc) + timedelta(minutes=est_minutes)).isoformat()
+
         cur = conn.execute(
             """INSERT INTO orders (
                 order_number, brand_id, branch_id, customer_id, customer_name, customer_phone,
                 order_mode, table_number, car_info, delivery_address, delivery_lat, delivery_lng,
                 qr_nfc_code, status, kitchen_status, payment_method, payment_status, payment_ref,
                 subtotal, discount_amount, delivery_fee, vat_amount, total,
-                points_earned, points_redeemed, notes, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                points_earned, points_redeemed, notes, estimated_minutes, estimated_ready_at, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (
                 order_number,
                 payload.brand_id,
@@ -831,6 +839,8 @@ async def create_order(payload: OrderCreate, sess: Optional[Dict[str, Any]] = De
                 points_earned,
                 points_redeemed,
                 payload.notes,
+                est_minutes,
+                est_ready_at,
                 now,
                 now,
             ),
@@ -1716,9 +1726,21 @@ async def update_ops_order_status(order_id: int, payload: OrderStatusUpdate, ses
             if order["payment_method"] == "cash":
                 new_pstatus = "paid"
 
+        new_est_min = int(order["estimated_minutes"] or 10)
+        new_est_at = order["estimated_ready_at"] or ""
+        if payload.extra_minutes and payload.extra_minutes > 0:
+            new_est_min += int(payload.extra_minutes)
+            try:
+                base_dt = datetime.fromisoformat(new_est_at) if new_est_at else datetime.now(timezone.utc)
+            except Exception:
+                base_dt = datetime.now(timezone.utc)
+            if base_dt < datetime.now(timezone.utc):
+                base_dt = datetime.now(timezone.utc)
+            new_est_at = (base_dt + timedelta(minutes=int(payload.extra_minutes))).isoformat()
+
         conn.execute(
-            "UPDATE orders SET status = ?, kitchen_status = ?, payment_status = ?, updated_at = ? WHERE id = ?",
-            (new_status, new_kstatus, new_pstatus, utc_now_iso(), order_id),
+            "UPDATE orders SET status = ?, kitchen_status = ?, payment_status = ?, estimated_minutes = ?, estimated_ready_at = ?, updated_at = ? WHERE id = ?",
+            (new_status, new_kstatus, new_pstatus, new_est_min, new_est_at, utc_now_iso(), order_id),
         )
         log_audit(
             conn,

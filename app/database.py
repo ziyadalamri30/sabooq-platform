@@ -344,6 +344,8 @@ CREATE TABLE IF NOT EXISTS orders (
     notes TEXT NOT NULL DEFAULT '',
     rating INTEGER,
     review_comment TEXT NOT NULL DEFAULT '',
+    estimated_minutes INTEGER NOT NULL DEFAULT 10,
+    estimated_ready_at TEXT NOT NULL DEFAULT '',
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
 );
@@ -424,6 +426,8 @@ def _ensure_migrations(conn) -> None:
         ("brands", "owner_name", "TEXT NOT NULL DEFAULT ''"),
         ("brands", "owner_phone", "TEXT NOT NULL DEFAULT ''"),
         ("brands", "approved_at", "TEXT NOT NULL DEFAULT ''"),
+        ("orders", "estimated_minutes", "INTEGER NOT NULL DEFAULT 10"),
+        ("orders", "estimated_ready_at", "TEXT NOT NULL DEFAULT ''"),
     ]
     for tbl, col, col_def in alter_cols:
         try:
