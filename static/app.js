@@ -6,6 +6,7 @@
 const STATE = {
   view: "home", // home | brand | track | customer | team | cashier | kitchen | manage | superadmin
   brands: [],
+  brandCache: {},
   activeBrand: null, // { brand, branches, categories, products, qr_tags, payments }
   selectedBranchId: null,
   selectedCategoryId: "all",
@@ -246,10 +247,12 @@ async function navigate(view, arg = null) {
 // 1. HOME PORTAL (Sabooq Main Directory)
 // ---------------------------------------------------------------------------
 
-async function renderHome() {
+async function renderHome(forceRefresh = false) {
   const root = document.getElementById("appRoot");
-  const data = await api("/api/brands");
-  STATE.brands = data.brands || [];
+  if (!STATE.brands.length || forceRefresh) {
+    const data = await api("/api/brands");
+    STATE.brands = data.brands || [];
+  }
   const totalBranches = STATE.brands.reduce((a, b) => a + (b.branches ? b.branches.length : 0), 0);
   const totalProducts = STATE.brands.reduce((a, b) => a + (b.products_count || 0), 0);
 
@@ -381,7 +384,8 @@ async function submitSupportTicket() {
 async function renderBrandStorefront(slug) {
   const root = document.getElementById("appRoot");
   try {
-    const data = await api(`/api/brands/${encodeURIComponent(slug)}`);
+    const data = STATE.brandCache[slug] || await api(`/api/brands/${encodeURIComponent(slug)}`);
+    STATE.brandCache[slug] = data;
     STATE.activeBrand = data;
     applyBrandTheme(data.brand);
     if (!STATE.selectedBranchId || !data.branches.some((b) => b.id === STATE.selectedBranchId)) {
