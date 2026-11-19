@@ -40,6 +40,37 @@ app.add_middleware(
 
 STATIC_DIR = BASE_DIR / "static"
 
+import time as _time
+
+_PUBLIC_CACHE: Dict[str, Any] = {}
+_CACHE_TTL = 30.0
+
+
+def _cache_get(key: str):
+    item = _PUBLIC_CACHE.get(key)
+    if item and (_time.monotonic() - item[0]) < _CACHE_TTL:
+        return item[1]
+    return None
+
+
+def _cache_set(key: str, val: Any):
+    _PUBLIC_CACHE[key] = (_time.monotonic(), val)
+
+
+def _cache_clear():
+    _PUBLIC_CACHE.clear()
+
+
+@app.middleware("http")
+async def add_cache_headers(request: Request, call_next):
+    response = await call_next(request)
+    p = request.url.path
+    if p.startswith("/static/assets/") or p.endswith(".png"):
+        response.headers["Cache-Control"] = "public, max-age=86400"
+    elif p.startswith("/static/"):
+        response.headers["Cache-Control"] = "public, max-age=300"
+    return response
+
 
 @app.on_event("startup")
 def on_startup() -> None:
@@ -356,33 +387,43 @@ def get_payments_config():
 
 @app.get("/api/brands")
 def list_public_brands(q: Optional[str] = None):
-    with db_session() as conn:
-        rows = conn.execute(
-            "SELECT * FROM brands WHERE is_active = 1 ORDER BY id ASC"
-        ).fetchall()
-        result = []
+    cached = _cache_get("all_brands")
+    if cached is None:
+        with db_session() as conn:
+            rows = conn.execute("SELECT * FROM brands WHERE is_active = 1 ORDER BY id ASC").fetchall()
+            all_branches = conn.execute("SELECT * FROM branches ORDER BY id ASC").fetchall()
+            prod_counts = conn.execute(
+                "SELECT brand_id, COUNT(*) AS c FROM products WHERE is_available = 1 GROUP BY brand_id"
+            ).fetchall()
+        br_by_brand: Dict[int, List[Dict[str, Any]]] = {}
+        for br in all_branches:
+            brd = dict(br)
+            br_by_brand.setdefault(brd["brand_id"], []).append(brd)
+        pc_by_brand = {r["brand_id"]: r["c"] for r in prod_counts}
+        cached = []
         for r in rows:
             b = dict(r)
-            if q:
-                ql = q.strip().lower()
-                hay = f"{b['name_ar']} {b['name_en']} {b['category_ar']} {b['category_en']} {b['slug']}".lower()
-                if ql not in hay:
-                    continue
-            branches = [
-                dict(br)
-                for br in conn.execute("SELECT * FROM branches WHERE brand_id = ? ORDER BY id ASC", (b["id"],)).fetchall()
+            b["branches"] = br_by_brand.get(b["id"], [])
+            b["products_count"] = pc_by_brand.get(b["id"], 0)
+            cached.append(b)
+        _cache_set("all_brands", cached)
+
+    if q:
+        ql = q.strip().lower()
+        return {
+            "brands": [
+                b for b in cached
+                if ql in f"{b['name_ar']} {b['name_en']} {b['category_ar']} {b['category_en']} {b['slug']}".lower()
             ]
-            prod_count = conn.execute(
-                "SELECT COUNT(*) AS c FROM products WHERE brand_id = ? AND is_available = 1", (b["id"],)
-            ).fetchone()["c"]
-            b["branches"] = branches
-            b["products_count"] = prod_count
-            result.append(b)
-        return {"brands": result}
+        }
+    return {"brands": cached}
 
 
 @app.get("/api/brands/{slug}")
 def get_brand_storefront(slug: str):
+    cached = _cache_get(f"brand:{slug}")
+    if cached is not None:
+        return cached
     with db_session() as conn:
         brand = conn.execute("SELECT * FROM brands WHERE slug = ?", (slug,)).fetchone()
         if not brand:
@@ -419,7 +460,7 @@ def get_brand_storefront(slug: str):
                 (b["id"],),
             ).fetchall()
         ]
-        return {
+        res = {
             "brand": b,
             "branches": branches,
             "categories": categories,
@@ -427,6 +468,8 @@ def get_brand_storefront(slug: str):
             "qr_tags": qr_tags,
             "payments": payment_gateway_status(),
         }
+        _cache_set(f"brand:{slug}", res)
+        return res
 
 
 @app.get("/api/qr/{code}")
@@ -463,8 +506,8 @@ def resolve_qr_nfc_tag(code: str, sess: Optional[Dict[str, Any]] = Depends(get_o
                 """INSERT INTO customer_brand_loyalty (customer_id, brand_id, points, visits, last_visit_at)
                    VALUES (?, ?, ?, 1, ?)
                    ON CONFLICT(customer_id, brand_id) DO UPDATE SET
-                     points = points + excluded.points,
-                     visits = visits + 1,
+                     points = customer_brand_loyalty.points + excluded.points,
+                     visits = customer_brand_loyalty.visits + 1,
                      last_visit_at = excluded.last_visit_at""",
                 (cid, tag["brand_id"], bonus, now),
             )
@@ -816,8 +859,8 @@ async def create_order(payload: OrderCreate, sess: Optional[Dict[str, Any]] = De
                 """INSERT INTO customer_brand_loyalty (customer_id, brand_id, points, visits, last_visit_at)
                    VALUES (?, ?, MAX(0, ?), 1, ?)
                    ON CONFLICT(customer_id, brand_id) DO UPDATE SET
-                     points = MAX(0, points + ?),
-                     visits = visits + 1,
+                     points = MAX(0, customer_brand_loyalty.points + ?),
+                     visits = customer_brand_loyalty.visits + 1,
                      last_visit_at = excluded.last_visit_at""",
                 (customer_id, payload.brand_id, net_points, now, net_points),
             )
@@ -1113,7 +1156,7 @@ def admin_create_brand(payload: BrandCreate, sess: Dict[str, Any] = Depends(requ
 
         log_audit(conn, "staff", sess["user_id"], sess["role"], "create_brand", {"slug": slug, "brand_id": brand_id}, brand_id)
         brand = dict(conn.execute("SELECT * FROM brands WHERE id = ?", (brand_id,)).fetchone())
-        return {"brand": brand, "first_branch_id": branch_id, "created_staff": created_staff}
+        _cache_clear(); return {"brand": brand, "first_branch_id": branch_id, "created_staff": created_staff}
 
 
 @app.patch("/api/admin/brands/{brand_id}")
@@ -1130,7 +1173,7 @@ def admin_update_brand(brand_id: int, payload: BrandUpdate, sess: Dict[str, Any]
     with db_session() as conn:
         conn.execute(f"UPDATE brands SET {sets} WHERE id = ?", vals)
         brand = dict(conn.execute("SELECT * FROM brands WHERE id = ?", (brand_id,)).fetchone())
-        return {"brand": brand}
+        _cache_clear(); return {"brand": brand}
 
 
 @app.patch("/api/admin/tickets/{ticket_id}")
@@ -1248,7 +1291,7 @@ def create_branch(brand_id: int, payload: BranchCreate, sess: Dict[str, Any] = D
             (brand_id, payload.name.strip(), payload.address.strip(), payload.phone.strip(), payload.lat, payload.lng, payload.prep_minutes, payload.delivery_fee, now),
         )
         branch = dict(conn.execute("SELECT * FROM branches WHERE id = ?", (cur.lastrowid,)).fetchone())
-        return {"branch": branch}
+        _cache_clear(); return {"branch": branch}
 
 
 @app.patch("/api/manage/branches/{branch_id}")
@@ -1264,7 +1307,7 @@ def update_branch(branch_id: int, payload: BranchUpdate, sess: Dict[str, Any] = 
         if updates:
             sets = ", ".join([f"{k} = ?" for k in updates.keys()])
             conn.execute(f"UPDATE branches SET {sets} WHERE id = ?", list(updates.values()) + [branch_id])
-        return {"branch": dict(conn.execute("SELECT * FROM branches WHERE id = ?", (branch_id,)).fetchone())}
+        _cache_clear(); return {"branch": dict(conn.execute("SELECT * FROM branches WHERE id = ?", (branch_id,)).fetchone())}
 
 
 @app.post("/api/manage/brands/{brand_id}/categories")
@@ -1276,7 +1319,7 @@ def create_category(brand_id: int, payload: CategoryCreate, sess: Dict[str, Any]
             "INSERT INTO categories (brand_id, code, name_ar, name_en, sort_order, is_active) VALUES (?, ?, ?, ?, ?, 1)",
             (brand_id, code, payload.name_ar.strip(), payload.name_en.strip(), payload.sort_order),
         )
-        return {"category": dict(conn.execute("SELECT * FROM categories WHERE id = ?", (cur.lastrowid,)).fetchone())}
+        _cache_clear(); return {"category": dict(conn.execute("SELECT * FROM categories WHERE id = ?", (cur.lastrowid,)).fetchone())}
 
 
 @app.post("/api/manage/brands/{brand_id}/products")
@@ -1307,7 +1350,7 @@ def create_product(brand_id: int, payload: ProductCreate, sess: Dict[str, Any] =
         )
         p = dict(conn.execute("SELECT * FROM products WHERE id = ?", (cur.lastrowid,)).fetchone())
         p["sizes"] = json.loads(p["sizes_json"] or "[]")
-        return {"product": p}
+        _cache_clear(); return {"product": p}
 
 
 @app.patch("/api/manage/products/{product_id}")
@@ -1325,7 +1368,7 @@ def update_product(product_id: int, payload: ProductUpdate, sess: Dict[str, Any]
             conn.execute(f"UPDATE products SET {sets} WHERE id = ?", list(updates.values()) + [product_id])
         p = dict(conn.execute("SELECT * FROM products WHERE id = ?", (product_id,)).fetchone())
         p["sizes"] = json.loads(p["sizes_json"] or "[]")
-        return {"product": p}
+        _cache_clear(); return {"product": p}
 
 
 @app.delete("/api/manage/products/{product_id}")
@@ -1429,7 +1472,7 @@ def grant_customer_bonus(brand_id: int, customer_id: int, payload: LoyaltyBonusR
         conn.execute(
             """INSERT INTO customer_brand_loyalty (customer_id, brand_id, points, visits, last_visit_at)
                VALUES (?, ?, MAX(0, ?), 0, ?)
-               ON CONFLICT(customer_id, brand_id) DO UPDATE SET points = MAX(0, points + ?)""",
+               ON CONFLICT(customer_id, brand_id) DO UPDATE SET points = MAX(0, customer_brand_loyalty.points + ?)""",
             (customer_id, brand_id, payload.points, now, payload.points),
         )
         conn.execute(
