@@ -181,6 +181,11 @@ CREATE TABLE IF NOT EXISTS brands (
     commission_rate REAL NOT NULL DEFAULT 5.0,
     loyalty_points_per_sar REAL NOT NULL DEFAULT 1.0,
     vat_rate REAL NOT NULL DEFAULT 15.0,
+    city TEXT NOT NULL DEFAULT 'المدينة المنورة',
+    approval_status TEXT NOT NULL DEFAULT 'approved',
+    owner_name TEXT NOT NULL DEFAULT '',
+    owner_phone TEXT NOT NULL DEFAULT '',
+    approved_at TEXT NOT NULL DEFAULT '',
     is_active INTEGER NOT NULL DEFAULT 1,
     created_at TEXT NOT NULL
 );
@@ -411,9 +416,31 @@ def compute_tier(points: int) -> str:
     return "برونزي"
 
 
+def _ensure_migrations(conn) -> None:
+    """Safely adds new columns to existing Supabase/SQLite databases without losing data."""
+    alter_cols = [
+        ("brands", "city", "TEXT NOT NULL DEFAULT 'المدينة المنورة'"),
+        ("brands", "approval_status", "TEXT NOT NULL DEFAULT 'approved'"),
+        ("brands", "owner_name", "TEXT NOT NULL DEFAULT ''"),
+        ("brands", "owner_phone", "TEXT NOT NULL DEFAULT ''"),
+        ("brands", "approved_at", "TEXT NOT NULL DEFAULT ''"),
+    ]
+    for tbl, col, col_def in alter_cols:
+        try:
+            if IS_POSTGRES:
+                conn.execute(f"ALTER TABLE {tbl} ADD COLUMN IF NOT EXISTS {col} {col_def}")
+            else:
+                cols = [r["name"] for r in conn.execute(f"PRAGMA table_info({tbl})").fetchall()]
+                if col not in cols:
+                    conn.execute(f"ALTER TABLE {tbl} ADD COLUMN {col} {col_def}")
+        except Exception:
+            pass
+
+
 def init_db() -> None:
     with db_session() as conn:
         conn.executescript(POSTGRES_SCHEMA_SQL if IS_POSTGRES else SQLITE_SCHEMA_SQL)
+        _ensure_migrations(conn)
         existing = conn.execute("SELECT COUNT(*) AS c FROM brands").fetchone()["c"]
         if existing == 0:
             _seed_initial_data(conn)

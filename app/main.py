@@ -170,6 +170,32 @@ class StaffLoginRequest(BaseModel):
     pin: str
 
 
+
+class MerchantRegisterRequest(BaseModel):
+    name_ar: str = Field(..., min_length=2)
+    name_en: str = ""
+    slug: str = Field(..., min_length=2, max_length=40)
+    category_ar: str = "قهوة ومطاعم"
+    city: str = "المدينة المنورة"
+    branch_name: str = "الفرع الرئيسي"
+    address: str = ""
+    owner_name: str = Field(..., min_length=2)
+    owner_phone: str = Field(..., min_length=8)
+    username: str = Field(..., min_length=3)
+    pin: str = Field(..., min_length=4, max_length=20)
+    theme_ac: str = "#4de3b6"
+    theme_bg: str = "#04261d"
+
+
+class BrandApproveRequest(BaseModel):
+    city: str = "المدينة المنورة"
+    address: str = ""
+    lat: float = 24.4672
+    lng: float = 39.6111
+    commission_rate: float = 5.0
+    loyalty_points_per_sar: float = 1.0
+
+
 class BrandCreate(BaseModel):
     slug: str = Field(..., min_length=2, max_length=40)
     name_ar: str
@@ -390,7 +416,7 @@ def list_public_brands(q: Optional[str] = None):
     cached = _cache_get("all_brands")
     if cached is None:
         with db_session() as conn:
-            rows = conn.execute("SELECT * FROM brands WHERE is_active = 1 ORDER BY id ASC").fetchall()
+            rows = conn.execute("SELECT * FROM brands WHERE is_active = 1 AND approval_status = 'approved' ORDER BY id ASC").fetchall()
             all_branches = conn.execute("SELECT * FROM branches ORDER BY id ASC").fetchall()
             prod_counts = conn.execute(
                 "SELECT brand_id, COUNT(*) AS c FROM products WHERE is_available = 1 GROUP BY brand_id"
@@ -966,13 +992,108 @@ async def payment_webhook(provider: str, request: Request, x_sabooq_signature: s
 # Staff Authentication
 # ---------------------------------------------------------------------------
 
+
+@app.post("/api/merchants/register")
+def merchant_self_register(payload: MerchantRegisterRequest):
+    slug = re.sub(r"[^a-z0-9_-]", "", payload.slug.lower().strip())
+    uname = payload.username.strip()
+    if not slug:
+        raise HTTPException(status_code=400, detail="المعرف المختصر يجب أن يكون بحروف إنجليزية أو أرقام")
+    now = utc_now_iso()
+    with db_session() as conn:
+        if conn.execute("SELECT id FROM brands WHERE slug = ?", (slug,)).fetchone():
+            raise HTTPException(status_code=409, detail="هذا المعرف المختصر مستخدم مسبقاً، اختر معرفاً آخر")
+        if conn.execute("SELECT id FROM staff_users WHERE username = ?", (uname,)).fetchone():
+            raise HTTPException(status_code=409, detail="اسم المستخدم مستخدم مسبقاً، اختر اسماً آخر")
+
+        cur = conn.execute(
+            """INSERT INTO brands (
+                slug, name_ar, name_en, category_ar, category_en, description,
+                theme_bg, theme_bg2, theme_card, theme_tx, theme_mut, theme_ac, theme_on,
+                city, approval_status, owner_name, owner_phone, is_active, created_at
+            ) VALUES (?, ?, ?, ?, '', ?, ?, '#06342a', '#07382c', '#f4efdc', '#a8c9bd', ?, '#03261c', ?, 'pending', ?, ?, 0, ?)""",
+            (
+                slug,
+                payload.name_ar.strip(),
+                payload.name_en.strip() or slug.title(),
+                payload.category_ar.strip(),
+                f"{payload.name_ar.strip()} — {payload.category_ar.strip()}",
+                payload.theme_bg,
+                payload.theme_ac,
+                payload.city.strip(),
+                payload.owner_name.strip(),
+                payload.owner_phone.strip(),
+                now,
+            ),
+        )
+        brand_id = cur.lastrowid
+
+        bcur = conn.execute(
+            """INSERT INTO branches (brand_id, name, address, phone, lat, lng, busy_level, prep_minutes, delivery_fee, is_open, created_at)
+               VALUES (?, ?, ?, ?, 24.4672, 39.6111, 'calm', 10, 12.0, 1, ?)""",
+            (brand_id, payload.branch_name.strip() or "الفرع الرئيسي", payload.address.strip(), payload.owner_phone.strip(), now),
+        )
+        branch_id = bcur.lastrowid
+
+        # Default category so owner can add products immediately after approval
+        conn.execute(
+            "INSERT INTO categories (brand_id, code, name_ar, name_en, sort_order, is_active) VALUES (?, 'main', 'القائمة الرئيسية', 'Main Menu', 0, 1)",
+            (brand_id,),
+        )
+        conn.execute(
+            "INSERT INTO categories (brand_id, code, name_ar, name_en, sort_order, is_active) VALUES (?, 'o', 'العروض والخصومات', 'Offers', -1, 1)",
+            (brand_id,),
+        )
+
+        # Create owner, cashier, and kitchen accounts as INACTIVE until Super Admin approves
+        staff_seed = [
+            (uname, payload.owner_name.strip(), payload.pin.strip(), "brand_admin", None),
+            (f"{slug}_cashier", f"كاشير {payload.name_ar.strip()}", "3333", "cashier", branch_id),
+            (f"{slug}_kitchen", f"مطبخ {payload.name_ar.strip()}", "4444", "kitchen", branch_id),
+        ]
+        for u, fn, pin, rl, brid in staff_seed:
+            if not conn.execute("SELECT id FROM staff_users WHERE username = ?", (u,)).fetchone():
+                conn.execute(
+                    """INSERT INTO staff_users (username, full_name, pin_hash, role, brand_id, branch_id, phone, is_active, created_at)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?)""",
+                    (u, fn, hash_secret(pin), rl, brand_id, brid, payload.owner_phone.strip(), now),
+                )
+
+        # Create printable store QR + NFC tags
+        slug_up = slug.upper()
+        conn.execute(
+            """INSERT INTO qr_nfc_tags (code, brand_id, branch_id, tag_type, purpose, label, table_number, scan_count, is_active, created_at)
+               VALUES (?, ?, ?, 'both', 'branch_checkin', ?, '', 0, 1, ?)""",
+            (f"SBQ-{slug_up}-STORE", brand_id, branch_id, f"باركود المحل والولاء — {payload.name_ar.strip()}", now),
+        )
+        conn.execute(
+            """INSERT INTO qr_nfc_tags (code, brand_id, branch_id, tag_type, purpose, label, table_number, scan_count, is_active, created_at)
+               VALUES (?, ?, ?, 'both', 'table_order', ?, '1', 0, 1, ?)""",
+            (f"SBQ-{slug_up}-T1", brand_id, branch_id, f"طاولة 1 — {payload.name_ar.strip()}", now),
+        )
+
+        return {
+            "ok": True,
+            "brand_id": brand_id,
+            "approval_status": "pending",
+            "message": "تم استلام طلب تسجيل محلك بنجاح! سيتم مراجعته وتحديد الموقع وتفعيله من الإدارة العليا لسبوق قريباً.",
+        }
+
 @app.post("/api/auth/staff/login")
 def staff_login(payload: StaffLoginRequest):
     uname = payload.username.strip()
     with db_session() as conn:
-        user = conn.execute("SELECT * FROM staff_users WHERE username = ? AND is_active = 1", (uname,)).fetchone()
+        user = conn.execute("SELECT * FROM staff_users WHERE username = ?", (uname,)).fetchone()
         if not user or not verify_secret(payload.pin.strip(), user["pin_hash"]):
             raise HTTPException(status_code=401, detail="اسم المستخدم أو رمز الدخول غير صحيح")
+        if not user["is_active"]:
+            if user["brand_id"]:
+                b_row = conn.execute("SELECT approval_status FROM brands WHERE id = ?", (user["brand_id"],)).fetchone()
+                if b_row and b_row["approval_status"] == "pending":
+                    raise HTTPException(status_code=403, detail="طلب تسجيل محلك قيد المراجعة من الإدارة العليا لسبوق، سيتم تفعيل حسابك فور الموافقة")
+                if b_row and b_row["approval_status"] == "rejected":
+                    raise HTTPException(status_code=403, detail="تم رفض طلب تسجيل المحل، يرجى التواصل مع الإدارة العليا لسبوق")
+            raise HTTPException(status_code=403, detail="هذا الحساب موقوف حالياً، يرجى مراجعة الإدارة")
         token = create_session(conn, "staff", user["id"], user["role"], user["brand_id"], user["branch_id"], hours=24)
         brand_info = None
         branch_info = None
@@ -1039,7 +1160,8 @@ def admin_overview(sess: Dict[str, Any] = Depends(require_super_admin)):
                 (SELECT COUNT(*) FROM customers) AS total_customers,
                 (SELECT COUNT(*) FROM orders WHERE status != 'cancelled') AS total_orders,
                 (SELECT COALESCE(SUM(total), 0) FROM orders WHERE status != 'cancelled') AS total_revenue,
-                (SELECT COUNT(*) FROM support_tickets WHERE status = 'open') AS open_tickets
+                (SELECT COUNT(*) FROM support_tickets WHERE status = 'open') AS open_tickets,
+                (SELECT COUNT(*) FROM brands WHERE approval_status = 'pending') AS pending_brands_count
             """
         ).fetchone()
 
@@ -1048,7 +1170,7 @@ def admin_overview(sess: Dict[str, Any] = Depends(require_super_admin)):
             for r in conn.execute(
                 """SELECT
                     b.id, b.slug, b.name_ar, b.name_en, b.category_ar, b.logo_url, b.theme_ac,
-                    b.rating, b.reviews_count, b.commission_rate, b.is_active,
+                    b.rating, b.reviews_count, b.commission_rate, b.is_active, b.city, b.approval_status, b.owner_name, b.owner_phone,
                     (SELECT COUNT(*) FROM branches br WHERE br.brand_id = b.id) AS branches_count,
                     (SELECT COUNT(*) FROM products p WHERE p.brand_id = b.id) AS products_count,
                     (SELECT COUNT(*) FROM staff_users s WHERE s.brand_id = b.id) AS staff_count,
@@ -1066,9 +1188,20 @@ def admin_overview(sess: Dict[str, Any] = Depends(require_super_admin)):
             dict(r)
             for r in conn.execute("SELECT * FROM support_tickets ORDER BY id DESC LIMIT 30").fetchall()
         ]
+        pending_brands = [
+            dict(r)
+            for r in conn.execute(
+                """SELECT b.*, br.id AS first_branch_id, br.name AS branch_name, br.address AS branch_address, br.lat, br.lng
+                   FROM brands b
+                   LEFT JOIN branches br ON br.brand_id = b.id
+                   WHERE b.approval_status = 'pending'
+                   ORDER BY b.id DESC"""
+            ).fetchall()
+        ]
         return {
             "totals": dict(totals),
             "brands": per_brand,
+            "pending_brands": pending_brands,
             "recent_orders": recent_orders,
             "tickets": tickets,
         }
@@ -1175,6 +1308,45 @@ def admin_update_brand(brand_id: int, payload: BrandUpdate, sess: Dict[str, Any]
         brand = dict(conn.execute("SELECT * FROM brands WHERE id = ?", (brand_id,)).fetchone())
         _cache_clear(); return {"brand": brand}
 
+
+
+@app.post("/api/admin/brands/{brand_id}/approve")
+def admin_approve_brand(brand_id: int, payload: BrandApproveRequest, sess: Dict[str, Any] = Depends(require_super_admin)):
+    now = utc_now_iso()
+    with db_session() as conn:
+        b = conn.execute("SELECT * FROM brands WHERE id = ?", (brand_id,)).fetchone()
+        if not b:
+            raise HTTPException(status_code=404, detail="المحل غير موجود")
+        conn.execute(
+            """UPDATE brands
+               SET city = ?, commission_rate = ?, loyalty_points_per_sar = ?,
+                   approval_status = 'approved', is_active = 1, approved_at = ?
+               WHERE id = ?""",
+            (payload.city.strip(), payload.commission_rate, payload.loyalty_points_per_sar, now, brand_id),
+        )
+        # Update first branch address & GPS coordinates
+        br = conn.execute("SELECT id FROM branches WHERE brand_id = ? ORDER BY id ASC LIMIT 1", (brand_id,)).fetchone()
+        if br:
+            conn.execute(
+                "UPDATE branches SET address = ?, lat = ?, lng = ?, is_open = 1 WHERE id = ?",
+                (payload.address.strip() or payload.city.strip(), payload.lat, payload.lng, br["id"]),
+            )
+        # Activate the store owner's & staff accounts so they can log in immediately
+        conn.execute("UPDATE staff_users SET is_active = 1 WHERE brand_id = ?", (brand_id,))
+        log_audit(conn, "staff", sess["user_id"], sess["role"], "approve_brand", {"brand_id": brand_id, "city": payload.city}, brand_id)
+        updated = dict(conn.execute("SELECT * FROM brands WHERE id = ?", (brand_id,)).fetchone())
+    _cache_clear()
+    return {"ok": True, "brand": updated}
+
+
+@app.post("/api/admin/brands/{brand_id}/reject")
+def admin_reject_brand(brand_id: int, sess: Dict[str, Any] = Depends(require_super_admin)):
+    with db_session() as conn:
+        conn.execute("UPDATE brands SET approval_status = 'rejected', is_active = 0 WHERE id = ?", (brand_id,))
+        conn.execute("UPDATE staff_users SET is_active = 0 WHERE brand_id = ?", (brand_id,))
+        log_audit(conn, "staff", sess["user_id"], sess["role"], "reject_brand", {"brand_id": brand_id}, brand_id)
+    _cache_clear()
+    return {"ok": True}
 
 @app.patch("/api/admin/tickets/{ticket_id}")
 def close_support_ticket(ticket_id: int, sess: Dict[str, Any] = Depends(require_super_admin)):
