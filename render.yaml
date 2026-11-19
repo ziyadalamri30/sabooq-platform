@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: sabooq-platform
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SABOOQ_PAYMENT_MODE
+        value: sandbox
+      - key: SABOOQ_PAYMENT_PROVIDER
+        value: moyasar
+      - key: PYTHON_VERSION
+        value: 3.11.9

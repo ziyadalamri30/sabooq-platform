@@ -1,0 +1,2193 @@
+[
+  {
+    "slug": "haaf",
+    "name_ar": "حاف",
+    "name_en": "Haaf",
+    "category_ar": "قهوة مختصة ومخبوزات",
+    "category_en": "Specialty coffee & pastries",
+    "rating": 4.7,
+    "reviews_count": 312,
+    "logo_url": "/static/assets/brands/haaf/logo.jpg",
+    "cover_url": "/static/assets/brands/haaf/cover.jpg",
+    "theme": {
+      "bg": "#1d1008",
+      "bg2": "#2a170b",
+      "card": "#33200f",
+      "tx": "#f5ecdc",
+      "mut": "#b9a58a",
+      "ac": "#d9a15a",
+      "on": "#1d1008"
+    },
+    "branches": [
+      {
+        "name": "فرع حي الدفاع",
+        "address": "شارع سلمة بن المفضل، حي الدفاع",
+        "phone": "05XXXXXXXX",
+        "lat": 24.459,
+        "lng": 39.521
+      }
+    ],
+    "categories": [
+      {
+        "code": "f",
+        "name_ar": "الفطائر",
+        "sort_order": 0
+      },
+      {
+        "code": "p",
+        "name_ar": "البيتزا",
+        "sort_order": 1
+      },
+      {
+        "code": "d",
+        "name_ar": "الحلويات",
+        "sort_order": 2
+      },
+      {
+        "code": "h",
+        "name_ar": "ساخن",
+        "sort_order": 3
+      },
+      {
+        "code": "c",
+        "name_ar": "بارد",
+        "sort_order": 4
+      },
+      {
+        "code": "b",
+        "name_ar": "بوكس الجمعة",
+        "sort_order": 5
+      },
+      {
+        "code": "x",
+        "name_ar": "جانبية",
+        "sort_order": 6
+      }
+    ],
+    "products": [
+      {
+        "cat_code": "o",
+        "name_ar": "كومبو العسل: قهوة اليوم + كيكة العسل",
+        "price": 25.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_honeycake.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 1,
+        "sort_order": 0
+      },
+      {
+        "cat_code": "f",
+        "name_ar": "فطيرة جبن فيتا",
+        "price": 9.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_feta.jpg",
+        "calories": 235,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 1
+      },
+      {
+        "cat_code": "f",
+        "name_ar": "فطيرة لبنة وزعتر",
+        "price": 9.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_labneh_zaatar.jpg",
+        "calories": 260,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 2
+      },
+      {
+        "cat_code": "f",
+        "name_ar": "فطيرة لبنة وعسل",
+        "price": 9.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_labneh_honey.jpg",
+        "calories": 260,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 3
+      },
+      {
+        "cat_code": "f",
+        "name_ar": "فطيرة الجبن السايل مع شبس",
+        "price": 9.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_melted.jpg",
+        "calories": 292,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 4
+      },
+      {
+        "cat_code": "f",
+        "name_ar": "فطيرة الجبنتين",
+        "price": 9.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 235,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 5
+      },
+      {
+        "cat_code": "f",
+        "name_ar": "مزعترة",
+        "price": 13.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_maztara.jpg",
+        "calories": 250,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 6
+      },
+      {
+        "cat_code": "f",
+        "name_ar": "لبنة مزعترة",
+        "price": 14.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_labneh_maztara.jpg",
+        "calories": 250,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 7
+      },
+      {
+        "cat_code": "f",
+        "name_ar": "فطيرة طحينية",
+        "price": 13.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_tahini.jpg",
+        "calories": 350,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 8
+      },
+      {
+        "cat_code": "f",
+        "name_ar": "فطيرة الدجاج",
+        "price": 15.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 250,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 9
+      },
+      {
+        "cat_code": "p",
+        "name_ar": "بيتزا خضار",
+        "price": 21.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_veg_pizza.jpg",
+        "calories": 365,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 10
+      },
+      {
+        "cat_code": "p",
+        "name_ar": "بيتزا مارجاريتا",
+        "price": 21.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 229,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 11
+      },
+      {
+        "cat_code": "p",
+        "name_ar": "بيتزا دجاج",
+        "price": 24.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 235,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 12
+      },
+      {
+        "cat_code": "p",
+        "name_ar": "بيتزا بالكريمة الإيطالية",
+        "price": 24.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 212,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 13
+      },
+      {
+        "cat_code": "p",
+        "name_ar": "بيتزا مكس",
+        "price": 24.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 286,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 14
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "كوكيز",
+        "price": 7.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_cookies.jpg",
+        "calories": 200,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 15
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "ماجيك بار",
+        "price": 8.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_magic.jpg",
+        "calories": 280,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 16
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "كب كوكيز",
+        "price": 9.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 250,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 17
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "خلية حاف",
+        "price": 13.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_honeycomb.jpg",
+        "calories": 250,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 18
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "دولتشي شوكلت",
+        "price": 20.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_dulce.jpg",
+        "calories": 450,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 19
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "كيكة العسل",
+        "price": 20.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_honeycake.jpg",
+        "calories": 400,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 20
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "تشيز كيك توت",
+        "price": 20.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_berry.jpg",
+        "calories": 320,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 21
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "مدريدي تشيز",
+        "price": 20.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_madridy.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 22
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "شاهي",
+        "price": 4.0,
+        "sizes": [
+          {
+            "label": "صغير",
+            "price": 4.0
+          },
+          {
+            "label": "كبير",
+            "price": 5.0
+          },
+          {
+            "label": "زجاج",
+            "price": 6.0
+          }
+        ],
+        "image_url": "/static/assets/brands/haaf/item_shahi.jpg",
+        "calories": 57,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 23
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "شاهي أخضر",
+        "price": 4.0,
+        "sizes": [
+          {
+            "label": "صغير",
+            "price": 4.0
+          },
+          {
+            "label": "كبير",
+            "price": 5.0
+          },
+          {
+            "label": "زجاج",
+            "price": 6.0
+          }
+        ],
+        "image_url": "",
+        "calories": 48,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 24
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "طايفي",
+        "price": 4.0,
+        "sizes": [
+          {
+            "label": "صغير",
+            "price": 4.0
+          },
+          {
+            "label": "كبير",
+            "price": 5.0
+          },
+          {
+            "label": "زجاج",
+            "price": 6.0
+          }
+        ],
+        "image_url": "/static/assets/brands/haaf/item_taifi.jpg",
+        "calories": 40,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 25
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "قهوة اليوم",
+        "price": 9.0,
+        "sizes": [
+          {
+            "label": "صغير",
+            "price": 9.0
+          },
+          {
+            "label": "كبير",
+            "price": 10.0
+          }
+        ],
+        "image_url": "/static/assets/brands/haaf/item_coffee_hot.jpg",
+        "calories": 62,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 26
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "كرك",
+        "price": 5.0,
+        "sizes": [
+          {
+            "label": "صغير",
+            "price": 5.0
+          },
+          {
+            "label": "كبير",
+            "price": 6.0
+          },
+          {
+            "label": "زجاج",
+            "price": 7.0
+          }
+        ],
+        "image_url": "/static/assets/brands/haaf/item_karak.jpg",
+        "calories": 68,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 27
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "إبريق شاي",
+        "price": 12.0,
+        "sizes": [
+          {
+            "label": "صغير",
+            "price": 12.0
+          },
+          {
+            "label": "كبير",
+            "price": 14.0
+          }
+        ],
+        "image_url": "",
+        "calories": 145,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 28
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "قهوة اليوم",
+        "price": 10.0,
+        "sizes": [
+          {
+            "label": "صغير",
+            "price": 10.0
+          },
+          {
+            "label": "كبير",
+            "price": 11.0
+          }
+        ],
+        "image_url": "/static/assets/brands/haaf/item_coffee_cold.jpg",
+        "calories": 62,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 29
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "آيس كركديه",
+        "price": 12.0,
+        "sizes": [
+          {
+            "label": "صغير",
+            "price": 12.0
+          },
+          {
+            "label": "كبير",
+            "price": 14.0
+          }
+        ],
+        "image_url": "/static/assets/brands/haaf/item_karkade.jpg",
+        "calories": 48,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 30
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "آيس تي",
+        "price": 14.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 48,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 31
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "نسناس آيس كرك",
+        "price": 9.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_nesnas.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 32
+      },
+      {
+        "cat_code": "b",
+        "name_ar": "بوكس القهوة الحار",
+        "price": 39.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_coffeebox.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 33
+      },
+      {
+        "cat_code": "b",
+        "name_ar": "بوكس القهوة البارد",
+        "price": 42.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_coffeebox.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 34
+      },
+      {
+        "cat_code": "b",
+        "name_ar": "بوكس الكركديه",
+        "price": 43.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 35
+      },
+      {
+        "cat_code": "b",
+        "name_ar": "بوكس الآيس تي",
+        "price": 43.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 36
+      },
+      {
+        "cat_code": "b",
+        "name_ar": "بوكس الكرك",
+        "price": 39.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 37
+      },
+      {
+        "cat_code": "b",
+        "name_ar": "بوكس الشاهي",
+        "price": 24.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/haaf/item_teabox.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 38
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "ماء",
+        "price": 1.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 12,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 39
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "مكسرات مشكلة",
+        "price": 4.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 74,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 40
+      }
+    ]
+  },
+  {
+    "slug": "chill",
+    "name_ar": "تشيل تشيل",
+    "name_en": "Chill Chill",
+    "category_ar": "برجر وساندوتشات",
+    "category_en": "Burgers & Sandwiches",
+    "rating": 4.6,
+    "reviews_count": 418,
+    "logo_url": "/static/assets/brands/chill/logo.jpg",
+    "cover_url": "/static/assets/brands/chill/cover.jpg",
+    "theme": {
+      "bg": "#1d080c",
+      "bg2": "#2a0b10",
+      "card": "#330f15",
+      "tx": "#f5ecdc",
+      "mut": "#b9938a",
+      "ac": "#d9735a",
+      "on": "#1d080c"
+    },
+    "branches": [
+      {
+        "name": "فرع السلطانة",
+        "address": "السلطانة، المدينة المنورة",
+        "phone": "05XXXXXXXX",
+        "lat": 24.488,
+        "lng": 39.57
+      },
+      {
+        "name": "فرع الدائري",
+        "address": "الطريق الدائري، المدينة المنورة",
+        "phone": "05XXXXXXXX",
+        "lat": 24.43,
+        "lng": 39.63
+      }
+    ],
+    "categories": [
+      {
+        "code": "g",
+        "name_ar": "البرجر",
+        "sort_order": 0
+      },
+      {
+        "code": "s",
+        "name_ar": "الساندوتشات",
+        "sort_order": 1
+      },
+      {
+        "code": "f",
+        "name_ar": "فرايز",
+        "sort_order": 2
+      },
+      {
+        "code": "a",
+        "name_ar": "المقبلات والصوصات",
+        "sort_order": 3
+      },
+      {
+        "code": "k",
+        "name_ar": "وجبات وبوكسات",
+        "sort_order": 4
+      },
+      {
+        "code": "d",
+        "name_ar": "الحلويات",
+        "sort_order": 5
+      },
+      {
+        "code": "h",
+        "name_ar": "المشروبات",
+        "sort_order": 6
+      }
+    ],
+    "products": [
+      {
+        "cat_code": "g",
+        "name_ar": "تشكن برجر",
+        "price": 23.0,
+        "sizes": [
+          {
+            "label": "خبز أبيض",
+            "price": 23.0
+          },
+          {
+            "label": "خبز أسمر",
+            "price": 23.0
+          }
+        ],
+        "image_url": "/static/assets/brands/chill/item_chickenburger.jpg",
+        "calories": 515,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 0
+      },
+      {
+        "cat_code": "g",
+        "name_ar": "هني ناشفل تشكن",
+        "price": 27.0,
+        "sizes": [
+          {
+            "label": "خبز أبيض",
+            "price": 27.0
+          },
+          {
+            "label": "خبز أسمر",
+            "price": 27.0
+          }
+        ],
+        "image_url": "/static/assets/brands/chill/item_honey.jpg",
+        "calories": 647,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 1
+      },
+      {
+        "cat_code": "g",
+        "name_ar": "سماش برجر",
+        "price": 27.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_smash.jpg",
+        "calories": 570,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 2
+      },
+      {
+        "cat_code": "g",
+        "name_ar": "فلب بن",
+        "price": 33.0,
+        "sizes": [
+          {
+            "label": "خبز أبيض",
+            "price": 33.0
+          },
+          {
+            "label": "خبز أسمر",
+            "price": 33.0
+          }
+        ],
+        "image_url": "/static/assets/brands/chill/item_flip.jpg",
+        "calories": 865,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 3
+      },
+      {
+        "cat_code": "g",
+        "name_ar": "أمريكان ستايل",
+        "price": 29.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_american.jpg",
+        "calories": 589,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 4
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "تشكن ساندوتش",
+        "price": 23.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_chsand.jpg",
+        "calories": 465,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 5
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "تشيل ساندوتش",
+        "price": 24.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_chillsand.jpg",
+        "calories": 490,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 6
+      },
+      {
+        "cat_code": "f",
+        "name_ar": "ناشفل فرايز",
+        "price": 27.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_nashfries.jpg",
+        "calories": 925,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 7
+      },
+      {
+        "cat_code": "f",
+        "name_ar": "تشيل فرايز",
+        "price": 27.0,
+        "sizes": [
+          {
+            "label": "عادي",
+            "price": 27.0
+          },
+          {
+            "label": "مع لحم مقدد",
+            "price": 31.0
+          }
+        ],
+        "image_url": "/static/assets/brands/chill/item_chillfries.jpg",
+        "calories": 865,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 8
+      },
+      {
+        "cat_code": "a",
+        "name_ar": "بطاطا",
+        "price": 7.0,
+        "sizes": [
+          {
+            "label": "عادي",
+            "price": 7.0
+          },
+          {
+            "label": "مع بهارات",
+            "price": 8.0
+          }
+        ],
+        "image_url": "/static/assets/brands/chill/item_fries.jpg",
+        "calories": 425,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 9
+      },
+      {
+        "cat_code": "a",
+        "name_ar": "بطاطا حلوة",
+        "price": 16.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_sweet.jpg",
+        "calories": 545,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 10
+      },
+      {
+        "cat_code": "a",
+        "name_ar": "مخلل",
+        "price": 3.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_pickle.jpg",
+        "calories": 24,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 11
+      },
+      {
+        "cat_code": "a",
+        "name_ar": "تايستي صوص",
+        "price": 3.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_tasty.jpg",
+        "calories": 63,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 12
+      },
+      {
+        "cat_code": "a",
+        "name_ar": "تشيل تشيل صوص",
+        "price": 3.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_chillsauce.jpg",
+        "calories": 59,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 13
+      },
+      {
+        "cat_code": "a",
+        "name_ar": "هني سبايسي صوص",
+        "price": 4.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_honeysauce.jpg",
+        "calories": 65,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 14
+      },
+      {
+        "cat_code": "a",
+        "name_ar": "سيجنتشر صوص",
+        "price": 4.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_signature.jpg",
+        "calories": 68,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 15
+      },
+      {
+        "cat_code": "k",
+        "name_ar": "وجبة الطفل",
+        "price": 22.0,
+        "sizes": [
+          {
+            "label": "لحم",
+            "price": 22.0
+          },
+          {
+            "label": "دجاج",
+            "price": 22.0
+          },
+          {
+            "label": "تشكن ناجتس",
+            "price": 22.0
+          }
+        ],
+        "image_url": "/static/assets/brands/chill/item_kids.jpg",
+        "calories": 640,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 16
+      },
+      {
+        "cat_code": "k",
+        "name_ar": "بوكس برجر سلايدرز",
+        "price": 119.0,
+        "sizes": [
+          {
+            "label": "دجاج",
+            "price": 119.0
+          },
+          {
+            "label": "لحم",
+            "price": 119.0
+          }
+        ],
+        "image_url": "/static/assets/brands/chill/item_sliders.jpg",
+        "calories": 1786,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 17
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "بودينغ التفاح",
+        "price": 22.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_pudding.jpg",
+        "calories": 424,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 18
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "عصير برتقال",
+        "price": 15.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_orange.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 19
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "مشروب غازي",
+        "price": 5.0,
+        "sizes": [
+          {
+            "label": "بيبسي",
+            "price": 5.0
+          },
+          {
+            "label": "سفن أب",
+            "price": 5.0
+          },
+          {
+            "label": "آيس تي",
+            "price": 8.0
+          }
+        ],
+        "image_url": "/static/assets/brands/chill/item_soda.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 20
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "مياه غازية",
+        "price": 5.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 21
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "ماء",
+        "price": 1.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/chill/item_water.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 22
+      }
+    ]
+  },
+  {
+    "slug": "wind",
+    "name_ar": "ويند",
+    "name_en": "WIND",
+    "category_ar": "قهوة مختصة وحلويات",
+    "category_en": "Specialty coffee & desserts",
+    "rating": 4.8,
+    "reviews_count": 264,
+    "logo_url": "/static/assets/brands/wind/logo.jpg",
+    "cover_url": "/static/assets/brands/wind/cover.jpg",
+    "theme": {
+      "bg": "#080e1d",
+      "bg2": "#0b142a",
+      "card": "#0f1a33",
+      "tx": "#f5ecdc",
+      "mut": "#b9ac8a",
+      "ac": "#d9b55a",
+      "on": "#080e1d"
+    },
+    "branches": [
+      {
+        "name": "فرع المطل العزيزية",
+        "address": "المطل، العزيزية، المدينة المنورة",
+        "phone": "05XXXXXXXX",
+        "lat": 24.449,
+        "lng": 39.677
+      }
+    ],
+    "categories": [
+      {
+        "code": "o",
+        "name_ar": "العروض",
+        "sort_order": 0
+      },
+      {
+        "code": "h",
+        "name_ar": "المشروبات الساخنة",
+        "sort_order": 1
+      },
+      {
+        "code": "c",
+        "name_ar": "المشروبات الباردة",
+        "sort_order": 2
+      },
+      {
+        "code": "d",
+        "name_ar": "الحلويات",
+        "sort_order": 3
+      },
+      {
+        "code": "s",
+        "name_ar": "ساندوتشات",
+        "sort_order": 4
+      }
+    ],
+    "products": [
+      {
+        "cat_code": "o",
+        "name_ar": "كومبو العسل",
+        "price": 25.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/wind/item_w16.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 1,
+        "sort_order": 0
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "قهوة اليوم اثيوبي حار",
+        "price": 15.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/wind/item_w11.jpg",
+        "calories": 2,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 1
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "قهوة اليوم اوغندي حار",
+        "price": 12.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/wind/item_w12.jpg",
+        "calories": 2,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 2
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "اسبريسو ميكاتو",
+        "price": 16.0,
+        "sizes": [
+          {
+            "label": "حليب كامل الدسم",
+            "price": 16.0
+          },
+          {
+            "label": "حليب قليل الدسم",
+            "price": 16.0
+          },
+          {
+            "label": "حليب خالي اللاكتوز",
+            "price": 16.0
+          },
+          {
+            "label": "حليب اللوز",
+            "price": 16.0
+          }
+        ],
+        "image_url": "/static/assets/brands/wind/item_w9.jpg",
+        "calories": 67,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 3
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "شكولاتة ساخنة",
+        "price": 21.0,
+        "sizes": [
+          {
+            "label": "حليب كامل الدسم",
+            "price": 21.0
+          },
+          {
+            "label": "حليب قليل الدسم",
+            "price": 21.0
+          },
+          {
+            "label": "حليب خالي اللاكتوز",
+            "price": 21.0
+          },
+          {
+            "label": "حليب اللوز",
+            "price": 21.0
+          }
+        ],
+        "image_url": "/static/assets/brands/wind/item_w8.jpg",
+        "calories": 120,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 4
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "شاي انجليزي",
+        "price": 8.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/wind/item_w10.jpg",
+        "calories": 9,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 5
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "قهوة اليوم اثيوبي بارد",
+        "price": 15.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/wind/item_w0.jpg",
+        "calories": 2,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 6
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "قهوة اليوم اوغندي بارد",
+        "price": 12.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/wind/item_w0.jpg",
+        "calories": 2,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 7
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "ايس شيكن",
+        "price": 21.0,
+        "sizes": [
+          {
+            "label": "حليب كامل الدسم",
+            "price": 21.0
+          },
+          {
+            "label": "حليب قليل الدسم",
+            "price": 21.0
+          },
+          {
+            "label": "حليب خالي اللاكتوز",
+            "price": 21.0
+          },
+          {
+            "label": "حليب اللوز",
+            "price": 21.0
+          }
+        ],
+        "image_url": "/static/assets/brands/wind/item_w4.jpg",
+        "calories": 323,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 8
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "ماتشا لاتيه",
+        "price": 23.0,
+        "sizes": [
+          {
+            "label": "حليب كامل الدسم",
+            "price": 23.0
+          },
+          {
+            "label": "حليب قليل الدسم",
+            "price": 23.0
+          },
+          {
+            "label": "حليب خالي اللاكتوز",
+            "price": 23.0
+          },
+          {
+            "label": "حليب اللوز",
+            "price": 23.0
+          }
+        ],
+        "image_url": "/static/assets/brands/wind/item_w5.jpg",
+        "calories": 80,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 9
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "ماتشا فانيلا لاتيه",
+        "price": 25.0,
+        "sizes": [
+          {
+            "label": "حليب كامل الدسم",
+            "price": 25.0
+          },
+          {
+            "label": "حليب قليل الدسم",
+            "price": 25.0
+          },
+          {
+            "label": "حليب خالي اللاكتوز",
+            "price": 25.0
+          },
+          {
+            "label": "حليب اللوز",
+            "price": 25.0
+          }
+        ],
+        "image_url": "/static/assets/brands/wind/item_w6.jpg",
+        "calories": 181,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 10
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "كراميل فرابتشينو",
+        "price": 23.0,
+        "sizes": [
+          {
+            "label": "حليب كامل الدسم",
+            "price": 23.0
+          },
+          {
+            "label": "حليب قليل الدسم",
+            "price": 23.0
+          },
+          {
+            "label": "حليب خالي اللاكتوز",
+            "price": 23.0
+          },
+          {
+            "label": "حليب اللوز",
+            "price": 23.0
+          }
+        ],
+        "image_url": "/static/assets/brands/wind/item_w7.jpg",
+        "calories": 303,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 11
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "باشن فروت",
+        "price": 21.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/wind/item_w1.jpg",
+        "calories": 137,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 12
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "ايس تي",
+        "price": 21.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/wind/item_w2.jpg",
+        "calories": 195,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 13
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "روز بيري",
+        "price": 21.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/wind/item_w3.jpg",
+        "calories": 142,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 14
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "كركديه",
+        "price": 21.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 15
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "ماء",
+        "price": 2.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 16
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "قطعة كيكة العسل",
+        "price": 23.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/wind/item_w14.jpg",
+        "calories": 380,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 17
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "سان سبيستان",
+        "price": 25.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/wind/item_w15.jpg",
+        "calories": 370,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 18
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "ماربل كيك",
+        "price": 16.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/wind/item_w13.jpg",
+        "calories": 452,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 19
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "كوكيز",
+        "price": 14.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 20
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "بوكس كوكيز",
+        "price": 75.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 21
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "براونيز",
+        "price": 13.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 22
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "كيكة الليمون",
+        "price": 14.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 23
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "تشيز كيك جزر",
+        "price": 18.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 24
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "تونا شباتا سبايسي",
+        "price": 21.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 1,
+        "is_offer": 0,
+        "sort_order": 25
+      }
+    ]
+  },
+  {
+    "slug": "lite",
+    "name_ar": "ليت",
+    "name_en": "leet",
+    "category_ar": "قهوة ماتشا وحلويات",
+    "category_en": "Coffee, matcha & desserts",
+    "rating": 4.5,
+    "reviews_count": 187,
+    "logo_url": "/static/assets/brands/lite/logo.jpg",
+    "cover_url": "/static/assets/brands/lite/cover.jpg",
+    "theme": {
+      "bg": "#1d0908",
+      "bg2": "#2a0d0b",
+      "card": "#33110f",
+      "tx": "#f5ecdc",
+      "mut": "#b99d8a",
+      "ac": "#d98d5a",
+      "on": "#1d0908"
+    },
+    "branches": [
+      {
+        "name": "فرع السلطانة",
+        "address": "السلطانة، المدينة المنورة",
+        "phone": "05XXXXXXXX",
+        "lat": 24.488,
+        "lng": 39.57
+      }
+    ],
+    "categories": [
+      {
+        "code": "m",
+        "name_ar": "ماتشا",
+        "sort_order": 0
+      },
+      {
+        "code": "c",
+        "name_ar": "المشروبات الباردة",
+        "sort_order": 1
+      },
+      {
+        "code": "h",
+        "name_ar": "المشروبات الساخنة",
+        "sort_order": 2
+      },
+      {
+        "code": "d",
+        "name_ar": "الحلويات",
+        "sort_order": 3
+      }
+    ],
+    "products": [
+      {
+        "cat_code": "m",
+        "name_ar": "آيس ماتشا لاتيه",
+        "price": 24.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/lite/item_l0.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 0
+      },
+      {
+        "cat_code": "m",
+        "name_ar": "آيس ماتشا بيور",
+        "price": 26.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/lite/item_l1.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 1
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "آيس لاتيه",
+        "price": 22.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/lite/item_l2.jpg",
+        "calories": 228,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 2
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "كركديه التوت",
+        "price": 23.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/lite/item_l3.jpg",
+        "calories": 193,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 3
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "آيس تي خوخ وأناناس",
+        "price": 23.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/lite/item_l4.jpg",
+        "calories": 190,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 4
+      },
+      {
+        "cat_code": "c",
+        "name_ar": "قهوة اليوم بارد",
+        "price": 14.0,
+        "sizes": [
+          {
+            "label": "صغير",
+            "price": 14.0
+          },
+          {
+            "label": "وسط",
+            "price": 16.0
+          },
+          {
+            "label": "كبير",
+            "price": 19.0
+          }
+        ],
+        "image_url": "/static/assets/brands/lite/item_l5.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 5
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "قهوة اليوم حار",
+        "price": 13.0,
+        "sizes": [
+          {
+            "label": "صغير",
+            "price": 13.0
+          }
+        ],
+        "image_url": "/static/assets/brands/lite/item_l6.jpg",
+        "calories": 7,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 6
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "بيكاروت",
+        "price": 29.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/lite/item_l7.jpg",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 7
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "دولتشي دي كراميل",
+        "price": 32.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/lite/item_l8.jpg",
+        "calories": 259,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 8
+      },
+      {
+        "cat_code": "d",
+        "name_ar": "تشوكلت كيك",
+        "price": 32.0,
+        "sizes": [],
+        "image_url": "/static/assets/brands/lite/item_l9.jpg",
+        "calories": 420,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 9
+      }
+    ]
+  },
+  {
+    "slug": "faroj",
+    "name_ar": "فروج مشوي",
+    "name_en": "BBQ CHICKEN",
+    "category_ar": "فروج مشوي ووجبات",
+    "category_en": "Grilled chicken & meals",
+    "rating": 4.4,
+    "reviews_count": 232,
+    "logo_url": "/static/assets/brands/faroj/logo.jpg",
+    "cover_url": "/static/assets/brands/faroj/cover.jpg",
+    "theme": {
+      "bg": "#1d0b08",
+      "bg2": "#2a100b",
+      "card": "#33150f",
+      "tx": "#f5ecdc",
+      "mut": "#b9ab8a",
+      "ac": "#d9b35a",
+      "on": "#1d0b08"
+    },
+    "branches": [
+      {
+        "name": "فرع طريق الهجرة",
+        "address": "طريق الهجرة، المدينة المنورة",
+        "phone": "05XXXXXXXX",
+        "lat": 24.39,
+        "lng": 39.64
+      }
+    ],
+    "categories": [
+      {
+        "code": "r",
+        "name_ar": "الفروج والبروست",
+        "sort_order": 0
+      },
+      {
+        "code": "m",
+        "name_ar": "الوجبات",
+        "sort_order": 1
+      },
+      {
+        "code": "s",
+        "name_ar": "الساندوتشات",
+        "sort_order": 2
+      },
+      {
+        "code": "x",
+        "name_ar": "الجانبية والمقبلات",
+        "sort_order": 3
+      },
+      {
+        "code": "h",
+        "name_ar": "المشروبات",
+        "sort_order": 4
+      },
+      {
+        "code": "k",
+        "name_ar": "الأطفال",
+        "sort_order": 5
+      }
+    ],
+    "products": [
+      {
+        "cat_code": "r",
+        "name_ar": "فروج مشوي",
+        "price": 25.0,
+        "sizes": [
+          {
+            "label": "عادي",
+            "price": 25.0
+          },
+          {
+            "label": "حار",
+            "price": 25.0
+          }
+        ],
+        "image_url": "",
+        "calories": 516,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 0
+      },
+      {
+        "cat_code": "r",
+        "name_ar": "بروست",
+        "price": 38.0,
+        "sizes": [
+          {
+            "label": "حبة كاملة · عادي",
+            "price": 38.0
+          },
+          {
+            "label": "حبة كاملة · حار",
+            "price": 38.0
+          },
+          {
+            "label": "نصف · عادي",
+            "price": 19.0
+          },
+          {
+            "label": "نصف · حار",
+            "price": 19.0
+          },
+          {
+            "label": "ربع · عادي",
+            "price": 10.0
+          },
+          {
+            "label": "ربع · حار",
+            "price": 10.0
+          }
+        ],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 1
+      },
+      {
+        "cat_code": "r",
+        "name_ar": "فروج مومباي",
+        "price": 18.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 920,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 2
+      },
+      {
+        "cat_code": "m",
+        "name_ar": "وجبة فروج مشوي",
+        "price": 31.0,
+        "sizes": [
+          {
+            "label": "عادي",
+            "price": 31.0
+          },
+          {
+            "label": "حار",
+            "price": 31.0
+          }
+        ],
+        "image_url": "",
+        "calories": 1032,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 3
+      },
+      {
+        "cat_code": "m",
+        "name_ar": "كبسة مومباي",
+        "price": 22.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 1199,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 4
+      },
+      {
+        "cat_code": "m",
+        "name_ar": "كباب مع الرز",
+        "price": 14.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 942,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 5
+      },
+      {
+        "cat_code": "m",
+        "name_ar": "مسحب",
+        "price": 18.0,
+        "sizes": [
+          {
+            "label": "10 قطع · عادي",
+            "price": 18.0
+          },
+          {
+            "label": "10 قطع · حار",
+            "price": 18.0
+          },
+          {
+            "label": "6 قطع · عادي",
+            "price": 11.0
+          },
+          {
+            "label": "6 قطع · حار",
+            "price": 11.0
+          }
+        ],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 6
+      },
+      {
+        "cat_code": "m",
+        "name_ar": "جمبري",
+        "price": 21.0,
+        "sizes": [
+          {
+            "label": "11 قطعة",
+            "price": 21.0
+          },
+          {
+            "label": "6 قطع",
+            "price": 12.0
+          }
+        ],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 7
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "ساندوتش فروج مشوي",
+        "price": 9.0,
+        "sizes": [
+          {
+            "label": "عادي",
+            "price": 9.0
+          },
+          {
+            "label": "حار",
+            "price": 9.0
+          }
+        ],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 8
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "2 ساندوتش فروج مشوي",
+        "price": 14.0,
+        "sizes": [
+          {
+            "label": "عادي",
+            "price": 14.0
+          },
+          {
+            "label": "حار",
+            "price": 14.0
+          }
+        ],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 9
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "ساندوتش كباب",
+        "price": 9.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 10
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "2 ساندوتش كباب",
+        "price": 14.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 11
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "ساندوتش مسحب",
+        "price": 8.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 12
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "وجبة ساندوتش مسحب",
+        "price": 15.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 13
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "ساندوتش زنجر",
+        "price": 10.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 14
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "وجبة ساندوتش زنجر",
+        "price": 17.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 15
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "ساندوتش جمبري",
+        "price": 10.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 16
+      },
+      {
+        "cat_code": "s",
+        "name_ar": "وجبة ساندوتش جمبري",
+        "price": 17.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 17
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "بطاطس",
+        "price": 5.0,
+        "sizes": [
+          {
+            "label": "صغير",
+            "price": 5.0
+          },
+          {
+            "label": "كبير",
+            "price": 7.0
+          }
+        ],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 18
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "أرز",
+        "price": 5.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 233,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 19
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "ثوم",
+        "price": 1.0,
+        "sizes": [
+          {
+            "label": "عادي",
+            "price": 1.0
+          },
+          {
+            "label": "حار",
+            "price": 1.0
+          }
+        ],
+        "image_url": "",
+        "calories": 98,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 20
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "طحينة",
+        "price": 1.0,
+        "sizes": [
+          {
+            "label": "عادي",
+            "price": 1.0
+          },
+          {
+            "label": "حار",
+            "price": 1.0
+          }
+        ],
+        "image_url": "",
+        "calories": 31,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 21
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "كوكتيل",
+        "price": 2.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 250,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 22
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "هاني ماستر",
+        "price": 2.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 250,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 23
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "بسبوسة",
+        "price": 3.0,
+        "sizes": [
+          {
+            "label": "قطعة",
+            "price": 3.0
+          },
+          {
+            "label": "قطعتين",
+            "price": 6.0
+          }
+        ],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 24
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "سلطة ملفوف",
+        "price": 4.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 208,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 25
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "متبل",
+        "price": 4.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 284,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 26
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "حمص",
+        "price": 5.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 284,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 27
+      },
+      {
+        "cat_code": "x",
+        "name_ar": "ذرة",
+        "price": 6.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 177,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 28
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "مشروب غازي",
+        "price": 2.5,
+        "sizes": [],
+        "image_url": "",
+        "calories": 355,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 29
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "عصير",
+        "price": 2.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 54,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 30
+      },
+      {
+        "cat_code": "h",
+        "name_ar": "ماء",
+        "price": 1.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 0,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 31
+      },
+      {
+        "cat_code": "k",
+        "name_ar": "وجبة مسحب أطفال",
+        "price": 10.0,
+        "sizes": [],
+        "image_url": "",
+        "calories": 583,
+        "discount_percent": 0,
+        "is_offer": 0,
+        "sort_order": 32
+      }
+    ]
+  }
+]
