@@ -69,11 +69,30 @@ class PgCursorWrapper:
         return self._cur.fetchall()
 
 
-class PgConnectionWrapper:
-    """Presents the same .execute() / .executescript() API as sqlite3.Connection for PostgreSQL."""
+_PG_POOL = None
 
-    def __init__(self, raw_conn) -> None:
+
+def _get_pg_pool():
+    global _PG_POOL
+    if _PG_POOL is None:
+        import psycopg2.pool  # type: ignore
+
+        url = DATABASE_URL
+        if url.startswith("postgres://"):
+            url = "postgresql://" + url[len("postgres://"):]
+        if "sslmode=" not in url and "localhost" not in url and "127.0.0.1" not in url:
+            sep = "&" if "?" in url else "?"
+            url = f"{url}{sep}sslmode=require"
+        _PG_POOL = psycopg2.pool.ThreadedConnectionPool(minconn=1, maxconn=10, dsn=url)
+    return _PG_POOL
+
+
+class PgConnectionWrapper:
+    """Presents the same .execute() / .executescript() API as sqlite3.Connection for pooled PostgreSQL."""
+
+    def __init__(self, raw_conn, pool=None) -> None:
         self._conn = raw_conn
+        self._pool = pool
 
     def execute(self, sql: str, params: Any = ()) -> PgCursorWrapper:
         import psycopg2.extras  # type: ignore
@@ -100,22 +119,24 @@ class PgConnectionWrapper:
         self._conn.rollback()
 
     def close(self) -> None:
+        if self._pool is not None:
+            try:
+                self._pool.putconn(self._conn)
+                return
+            except Exception:
+                pass
         self._conn.close()
 
 
 def get_connection():
     if IS_POSTGRES:
-        import psycopg2  # type: ignore
-
-        url = DATABASE_URL
-        if url.startswith("postgres://"):
-            url = "postgresql://" + url[len("postgres://"):]
-        # Supabase / cloud PostgreSQL requires SSL
-        if "sslmode=" not in url and "localhost" not in url and "127.0.0.1" not in url:
-            sep = "&" if "?" in url else "?"
-            url = f"{url}{sep}sslmode=require"
-        raw = psycopg2.connect(url)
-        return PgConnectionWrapper(raw)
+        pool = _get_pg_pool()
+        raw = pool.getconn()
+        # Verify pooled connection is alive; reconnect if dropped by Supabase idle timeout
+        if raw.closed:
+            pool.putconn(raw, close=True)
+            raw = pool.getconn()
+        return PgConnectionWrapper(raw, pool=pool)
 
     conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
     conn.row_factory = sqlite3.Row
