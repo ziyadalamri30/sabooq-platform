@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>سبوق | منصة الطلب والولاء للمحلات والمطاعم</title>
+  <meta name="theme-color" content="#04261d">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="hd">
+    <div class="wrap" id="headerWrap">
+      <div class="lg" onclick="navigate('home')">
+        <img src="/icon-192.png" alt="سبوق">
+        <span id="hdrBrandTitle">سبوق</span>
+      </div>
+      <nav id="mainNav"></nav>
+      <div class="tools">
+        <button class="icon-btn" onclick="openQrScannerModal()" title="مسح QR أو NFC">📷</button>
+        <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="تغيير المظهر">☀️</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="appRoot"></main>
+
+  <div id="cartBar" class="cart-bar hidden" onclick="openCartModal()"></div>
+  <div id="modalRoot"></div>
+  <div id="toastRoot" class="toast hidden"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
